@@ -4,12 +4,11 @@ title: About
 permalink: /about/
 ---
 
-Some information about you!
+Welcome!
 
-### More Information
-
-A place to include any other types of information that you'd like to include about yourself.
+Data visualizations, Maps, Wikipedia, OpenStreetMap, Open data...  These are some of my passions.
 
 ### Contact me
 
-[email@domain.com](mailto:email@domain.com)
+* ✉ YuriAstrakhan@gmail.com
+* 🐦 [nyuriks](https://twitter.com/nyuriks)
