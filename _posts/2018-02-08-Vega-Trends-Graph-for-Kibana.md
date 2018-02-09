@@ -17,7 +17,7 @@ There are plenty of [pending requests](https://github.com/elastic/kibana/issues?
 * Test that everything works by using **Discover** tab, setting the time filter in the upper right corner to the last 1 hour, and observe randomly generated data.
 
 ## [Trends Indicator](https://github.com/elastic/kibana/issues/2647)
-![Trends indicator](trends.png "Trends indicator")
+![Trends indicator](/assets/trends.png "Trends indicator")
 
 Lets build a very simple trend indicator to compare the number of events in the last 10 minutes vs the 10 minutes before that.  We can ask Elasticsearch for the 10 min aggregates, but those aggregates would be aligned on 10 minute boundaries, rather than being "last 10 minutes". Instead, we will ask for the last 20 aggregates 1 minute each, excluding the current (incomplete) minute. The `extended_bounds` param ensures that even when there is no data, we still get a count=0 result for each bucket.  Try running this query in the **Dev Tools** tab - copy/paste it, and hit the green play button.
 
