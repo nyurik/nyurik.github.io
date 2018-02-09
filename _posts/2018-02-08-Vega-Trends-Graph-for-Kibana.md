@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Kibana's Missing Vis - One Vega graph at a time - Trends
+title: "Kibana Vega Visualizations: Trends"
 ---
 
 There are plenty of [pending requests](https://github.com/elastic/kibana/issues?q=is%3Aopen+label%3A%22%3ANew+Vis%22+sort%3Acomments-desc) for Kibana visualizations. Now with Vega support, we no longer need to wait, anyone can do most of them by themselves!  This is the first in a series of blog posts on how to build Vega visualizations in Kibana.
