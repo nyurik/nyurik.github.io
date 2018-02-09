@@ -18,7 +18,7 @@ avatar: /images/nyurik.jpg
 # Includes an icon in the footer for each username you enter
 footer-links:
   dribbble:
-  email:
+  email: YuriAstrakhan@gmail.com
   facebook:
   flickr:
   github: nyurik/nyurik
@@ -27,7 +27,7 @@ footer-links:
   pinterest:
   rss: # just type anything here for a working RSS icon
   twitter: nyuriks
-  stackoverflow: # your stackoverflow profile, e.g. "users/50476/bart-kiers"
+  stackoverflow: users/177275/yurik
   youtube: # channel/<your_long_string> or user/<user-name>
   googleplus: # anything in your profile username that comes after plus.google.com/
 

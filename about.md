@@ -11,4 +11,3 @@ Data visualizations, Maps, Wikipedia, OpenStreetMap, Open data...  These are som
 ### Contact me
 
 * ✉ YuriAstrakhan@gmail.com
-* 🐦 [nyuriks](https://twitter.com/nyuriks)
