@@ -26,7 +26,7 @@ PUT /cars
 * Next, clear the dev console, open [this link](cars-sample-data.json), copy its entire content to the dev console, and also hit the green play button on it.  You should see a long response with  `"errors": false,`.
 
 
-* Now, open Visualizers, create a new Vega visualizer (it should be at the bottom), and copy/paste this Vega-Lite graph.  You should immediately see all of the imported data as a scatter plot.
+* Now, open Visualizers, create a new Vega visualization (it should be at the bottom), and copy/paste this Vega-Lite graph.  You should immediately see all of the imported data as a scatter plot.
 
 ```json
 {
@@ -82,10 +82,10 @@ Data could be either a static URL, or an object that describes ElasticSearch que
         "_score": 1,
         "_source": {
           "Name": "toyota corona mark ii",
-...
+          ...
         }
       },
-	...
+      ...
     ]
 }}
 ```
