@@ -9,7 +9,7 @@ name: Yuri Astrakhan
 description: Open Source is what I do.
 
 # URL of your avatar or profile pic (you could use your GitHub profile pic)
-avatar: images/nyurik.jpg
+avatar: /images/nyurik.jpg
 
 #
 # Flags below are optional
