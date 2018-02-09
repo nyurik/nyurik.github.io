@@ -66,7 +66,14 @@ Results:
 }
 ```
 
-Now that we know how to request needed data, and what that data would look like, we can build the visualization itself. Click **visualization** tab, click the blue plus sign, scroll down and click the **Vega** visualization.  You should now see the default demo visualization. Delete all the code from the left panel, paste this code instead, and click the blue **play** button. Voila, you now have an indicator that shows if the number of events in the last 10 minutes increased or decreased.  See code comments for explanation of what each line does, or read the [vega documentation](https://vega.github.io/vega/docs/).  Note that this code uses [HJSON](https://hjson.org/), a more readable form of JSON.
+Now that we know how to request needed data, and what that data would look like, we can build the visualization itself.
+* Click **visualization** tab
+* Click the blue plus sign
+* Scroll down and click the **Vega** visualization. You should now see the default demo visualization.
+* Delete all the code from the left panel
+* Copy/past this code instead, and click the blue **play** button.
+
+Voila, you now have an indicator that shows if the number of events in the last 10 minutes increased or decreased.  See code comments for explanation of what each line does, or read the [vega documentation](https://vega.github.io/vega/docs/).  Note that this code uses [HJSON](https://hjson.org/), a more readable form of JSON.
 
 ```yaml
 {
@@ -109,7 +116,8 @@ Now that we know how to request needed data, and what that data would look like,
         }
         # Break results into 2 groups, group 0 with row_number 1..10, and 1 - 11..20
         {type: "formula", expr: "floor((datum.row_number-1)/10)", as: "group"}
-        # Group 20 values into an array of two elements, one for each group, and sum up the doc_count fields as "count"
+        # Group 20 values into an array of two elements, one for
+        # each group, and sum up the doc_count fields as "count"
         {
           type: aggregate
           groupby: ["group"]
@@ -119,7 +127,7 @@ Now that we know how to request needed data, and what that data would look like,
         }
         # At this point "values" data source should look like this:
         # [ {group:0, count: nnn}, {group:1, count: nnn} ]
-        # Check this with F11 (browser debug tools), and running this in console:
+        # Check this with F11 (browser debug tools), and run this in console:
         #   VEGA_DEBUG.view.data('values')
       ]
     }
@@ -145,8 +153,11 @@ Now that we know how to request needed data, and what that data would look like,
           as: percentChange
         }
         # Calculate which symbol to show - up or down arrow, or a no-change dot
-        {type: "formula", expr: "if(datum.up,'🠹',if(datum.down,'🠻','🢝'))", as: "symbol"}
-
+        {
+          type: formula
+          expr: if(datum.up,'🠹',if(datum.down,'🠻','🢝'))
+          as: symbol
+        }
       ]
     }
   ]
@@ -154,7 +165,9 @@ Now that we know how to request needed data, and what that data would look like,
   marks: [
     {
       type: text
-      # Text mark executes once for each of the values in the results, but results has just one value in it. We could have also used it to draw a list of values.
+      # Text mark executes once for each of the values in the results,
+      # but results has just one value in it. We could have also used it
+      # to draw a list of values.
       from: {data: "results"}
       encode: {
         update: {

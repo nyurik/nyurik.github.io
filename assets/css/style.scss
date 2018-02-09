@@ -1,0 +1,10 @@
+---
+---
+
+@import "{{ site.theme }}";
+
+.blahblah {display: none;}
+
+.credits + .right {
+  display: none;
+}
