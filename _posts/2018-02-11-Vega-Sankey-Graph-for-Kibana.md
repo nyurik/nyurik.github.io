@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Kibana Vega Visualizations: Trends"
+title: "Kibana Vega Visualizations: Sankey"
 ---
 
 Continuing the series on building custom Vega graphs in Kibana, our today's topic is a simple two level Sankey graph to show network traffic patterns. Each entry in the sample data has source and destination country code.  The graph will have two modes: all-to-all (default), plus it will allow users to select either the source or the destination country, and show only related traffic.
