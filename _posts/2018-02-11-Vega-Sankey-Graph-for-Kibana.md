@@ -223,6 +223,7 @@ See code comments for explanation of what each line does, or read the [vega docu
       type: path
       name: edgeMark
       from: {data: "edges"}
+      clip: true
       encode: {
         update: {
           stroke: [
