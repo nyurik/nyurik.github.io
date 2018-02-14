@@ -287,7 +287,11 @@ See code comments for explanation of what each line does, or read the [vega docu
           # when showing all traffic, and hovering over a country,
           # highlight the traffic from that country.
           strokeOpacity: {
-            signal: !groupSelector && (groupHover.src == datum.src || groupHover.dst == datum.dst) ? 0.6 : 0.2
+            signal: !groupSelector && (groupHover.src == datum.src || groupHover.dst == datum.dst) ? 0.9 : 0.3
+          }
+          # Ensure that the hover-selected edges show on top
+          zindex: {
+            signal: !groupSelector && (groupHover.src == datum.src || groupHover.dst == datum.dst) ? 1 : 0
           }
           # format tooltip string
           tooltip: {
