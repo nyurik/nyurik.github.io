@@ -83,12 +83,12 @@ Understanding Vega code could be challenging at times. Luckly, you can access Ve
 
 See code comments for explanation of what each line does, or read the [vega documentation](https://vega.github.io/vega/docs/).  Note that this code uses [HJSON](https://hjson.org/), a more readable form of JSON.
 
-```yaml
+```js
 {
   $schema: https://vega.github.io/schema/vega/v3.0.json
   data: [
     {
-      # query ES based on the currently selected time range and filter string
+      // query ES based on the currently selected time range and filter string
       name: rawData
       url: {
         %context%: true
@@ -103,9 +103,9 @@ See code comments for explanation of what each line does, or read the [vega docu
           size: 0
         }
       }
-      # From the result, take just the data we are interested in
+      // From the result, take just the data we are interested in
       format: {property: "aggregations.pairs.buckets"}
-      # split "US:FR" into two fields, src=US and dst=FR
+      // split "US:FR" into two fields, src=US and dst=FR
       transform: [
         {type: "formula", expr: "slice(datum.key, 0, 2)", as: "src"}
         {type: "formula", expr: "slice(datum.key, 3, 5)", as: "dst"}
@@ -115,35 +115,35 @@ See code comments for explanation of what each line does, or read the [vega docu
       name: nodes
       source: rawData
       transform: [
-        # when a country is selected, filter out unrelated data
+        // when a country is selected, filter out unrelated data
         {
           type: filter
           expr: !groupSelector || groupSelector.src == datum.src || groupSelector.dst == datum.dst
         }
-        # instead of each table row, create two new rows,
-        # one for the source (stack=src) and one for destination node (stack=dst).
-        # The country code stored in src and dst fields is placed into cc field.
+        // instead of each table row, create two new rows,
+        // one for the source (stack=src) and one for destination node (stack=dst).
+        // The country code stored in src and dst fields is placed into cc field.
         {
           type: fold
           fields: ["src", "dst"]
           as: ["stack", "cc"]
         }
-        # Create a sortkey, differetn for src and dst stacks.
+        // Create a sortkey, differetn for src and dst stacks.
         {
           type: formula
           expr: datum.stack == 'src' ? datum.src+datum.dst : datum.dst+datum.src
           as: sortField
         }
-        # Calculate y0 and y1 positions for stacking nodes one on top of the other,
-        # independently for each stack, and ensuring they are in the proper order,
-        # alphabetical from the top (reversed on the y axis)
+        // Calculate y0 and y1 positions for stacking nodes one on top of the other,
+        // independently for each stack, and ensuring they are in the proper order,
+        // alphabetical from the top (reversed on the y axis)
         {
           type: stack
           groupby: ["stack"]
           sort: {field: "sortField", order: "descending"}
           field: doc_count
         }
-        # calculate vertical center point for each node, used to draw edges
+        // calculate vertical center point for each node, used to draw edges
         {type: "formula", expr: "(datum.y0+datum.y1)/2", as: "yc"}
       ]
     }
@@ -151,7 +151,7 @@ See code comments for explanation of what each line does, or read the [vega docu
       name: groups
       source: nodes
       transform: [
-        # combine all nodes into country groups, summing up the doc counts
+        // combine all nodes into country groups, summing up the doc counts
         {
           type: aggregate
           groupby: ["stack", "cc"]
@@ -159,21 +159,21 @@ See code comments for explanation of what each line does, or read the [vega docu
           ops: ["sum"]
           as: ["total"]
         }
-        # re-calculate the stacking y0,y1 values
+        // re-calculate the stacking y0,y1 values
         {
           type: stack
           groupby: ["stack"]
           sort: {field: "cc", order: "descending"}
           field: total
         }
-        # project y0 and y1 values to screen coordinates
-        # doing it once here instead of doing it several times in marks
+        // project y0 and y1 values to screen coordinates
+        // doing it once here instead of doing it several times in marks
         {type: "formula", expr: "scale('y', datum.y0)", as: "scaledY0"}
         {type: "formula", expr: "scale('y', datum.y1)", as: "scaledY1"}
-        # boolean flag if the label should be on the right of the stack
+        // boolean flag if the label should be on the right of the stack
         {type: "formula", expr: "datum.stack == 'src'", as: "rightLabel"}
-        # Calculate traffic percentage for this country using "y" scale
-        # domain upper bound, which represents the total traffic
+        // Calculate traffic percentage for this country using "y" scale
+        // domain upper bound, which represents the total traffic
         {
           type: formula
           expr: datum.total/domain('y')[1]
@@ -182,7 +182,7 @@ See code comments for explanation of what each line does, or read the [vega docu
       ]
     }
     {
-      # This is a temp lookup table with all the 'dst' stack nodes
+      // This is a temp lookup table with all the 'dst' stack nodes
       name: destinationNodes
       source: nodes
       transform: [
@@ -193,9 +193,9 @@ See code comments for explanation of what each line does, or read the [vega docu
       name: edges
       source: nodes
       transform: [
-        # we only want nodes from the left stack
+        // we only want nodes from the left stack
         {type: "filter", expr: "datum.stack == 'src'"}
-        # find corresponding node from the right stack, keep it as "target"
+        // find corresponding node from the right stack, keep it as "target"
         {
           type: lookup
           from: destinationNodes
@@ -203,7 +203,7 @@ See code comments for explanation of what each line does, or read the [vega docu
           fields: ["key"]
           as: ["target"]
         }
-        # calculate SVG link path between src and dst stacks for the node pair
+        // calculate SVG link path between src and dst stacks for the node pair
         {
           type: linkpath
           orient: horizontal
@@ -213,18 +213,18 @@ See code comments for explanation of what each line does, or read the [vega docu
           targetY: {expr: "scale('y', datum.target.yc)"}
           targetX: {expr: "scale('x', 'dst')"}
         }
-        # A little trick to calculate the thickness of the line.
-        # The value needs to be the same as the hight of the node, but scaling
-        # doc_count to screen's height gives inversed value because screen's Y
-        # coordinate goes from the top to the bottom, whereas the graph's Y=0
-        # is at the bottom. So subtracting scaled doc count from screen height
-        # (which is the "lower" bound of the "y" scale) gives us the right value
+        // A little trick to calculate the thickness of the line.
+        // The value needs to be the same as the hight of the node, but scaling
+        // doc_count to screen's height gives inversed value because screen's Y
+        // coordinate goes from the top to the bottom, whereas the graph's Y=0
+        // is at the bottom. So subtracting scaled doc count from screen height
+        // (which is the "lower" bound of the "y" scale) gives us the right value
         {
           type: formula
           expr: range('y')[0]-scale('y', datum.doc_count)
           as: strokeWidth
         }
-        # Tooltip needs individual link's percentage of all traffic
+        // Tooltip needs individual link's percentage of all traffic
         {
           type: formula
           expr: datum.doc_count/domain('y')[1]
@@ -235,7 +235,7 @@ See code comments for explanation of what each line does, or read the [vega docu
   ]
   scales: [
     {
-      # calculates horizontal stack positioning
+      // calculates horizontal stack positioning
       name: x
       type: band
       range: width
@@ -244,14 +244,14 @@ See code comments for explanation of what each line does, or read the [vega docu
       paddingInner: 0.95
     }
     {
-      # this scale goes up as high as the highest y1 value of all nodes
+      // this scale goes up as high as the highest y1 value of all nodes
       name: y
       type: linear
       range: height
       domain: {data: "nodes", field: "y1"}
     }
     {
-      # use rawData to ensure the colors stay the same when clicking.
+      // use rawData to ensure the colors stay the same when clicking.
       name: color
       type: ordinal
       range: category
@@ -264,16 +264,16 @@ See code comments for explanation of what each line does, or read the [vega docu
   ]
   marks: [
     {
-      # draw the connecting line between stacks
+      // draw the connecting line between stacks
       type: path
       name: edgeMark
       from: {data: "edges"}
-      # this prevents some autosizing issues with large strokeWidth for paths
+      // this prevents some autosizing issues with large strokeWidth for paths
       clip: true
       encode: {
         update: {
-          # By default use color of the left node, except when showing traffic
-          # from just one country, in which case use destination color.
+          // By default use color of the left node, except when showing traffic
+          // from just one country, in which case use destination color.
           stroke: [
             {
               test: groupSelector && groupSelector.stack=='src'
@@ -284,28 +284,28 @@ See code comments for explanation of what each line does, or read the [vega docu
           ]
           strokeWidth: {field: "strokeWidth"}
           path: {field: "path"}
-          # when showing all traffic, and hovering over a country,
-          # highlight the traffic from that country.
+          // when showing all traffic, and hovering over a country,
+          // highlight the traffic from that country.
           strokeOpacity: {
             signal: !groupSelector && (groupHover.src == datum.src || groupHover.dst == datum.dst) ? 0.9 : 0.3
           }
-          # Ensure that the hover-selected edges show on top
+          // Ensure that the hover-selected edges show on top
           zindex: {
             signal: !groupSelector && (groupHover.src == datum.src || groupHover.dst == datum.dst) ? 1 : 0
           }
-          # format tooltip string
+          // format tooltip string
           tooltip: {
             signal: datum.src + ' → ' + datum.dst + '    ' + format(datum.doc_count, ',.0f') + '   (' + format(datum.percentage, '.1%') + ')'
           }
         }
-        # Simple mouseover highlighting of a single line
+        // Simple mouseover highlighting of a single line
         hover: {
           strokeOpacity: {value: 1}
         }
       }
     }
     {
-      # draw stack groups (countries)
+      // draw stack groups (countries)
       type: rect
       name: groupMark
       from: {data: "groups"}
@@ -329,43 +329,43 @@ See code comments for explanation of what each line does, or read the [vega docu
       }
     }
     {
-      # draw country code labels on the inner side of the stack
+      // draw country code labels on the inner side of the stack
       type: text
       from: {data: "groups"}
-      # don't process events for the labels - otherwise line mouseover is unclean
+      // don't process events for the labels - otherwise line mouseover is unclean
       interactive: false
       encode: {
         update: {
-          # depending on which stack it is, position x with some padding
+          // depending on which stack it is, position x with some padding
           x: {
             signal: scale('x', datum.stack) + (datum.rightLabel ? bandwidth('x') + 8 : -8)
           }
-          # middle of the group
+          // middle of the group
           yc: {signal: "(datum.scaledY0 + datum.scaledY1)/2"}
           align: {signal: "datum.rightLabel ? 'left' : 'right'"}
           baseline: {value: "middle"}
           fontWeight: {value: "bold"}
-          # only show text label if the group's height is large enough
+          // only show text label if the group's height is large enough
           text: {signal: "abs(datum.scaledY0-datum.scaledY1) > 13 ? datum.cc : ''"}
         }
       }
     }
     {
-      # Create a "show all" button. Shown only when a country is selected.
+      // Create a "show all" button. Shown only when a country is selected.
       type: group
       data: [
-        # We need to make the button show only when groupSelector signal is true.
-        # Each mark is drawn as many times as there are elements in the backing data.
-        # Which means that if values list is empty, it will not be drawn.
-        # Here I create a data source with one empty object, and filter that list
-        # based on the signal value. This can only be done in a group.
+        // We need to make the button show only when groupSelector signal is true.
+        // Each mark is drawn as many times as there are elements in the backing data.
+        // Which means that if values list is empty, it will not be drawn.
+        // Here I create a data source with one empty object, and filter that list
+        // based on the signal value. This can only be done in a group.
         {
           name: dataForShowAll
           values: [{}]
           transform: [{type: "filter", expr: "groupSelector"}]
         }
       ]
-      # Set button size and positioning
+      // Set button size and positioning
       encode: {
         enter: {
           xc: {signal: "width/2"}
@@ -376,11 +376,11 @@ See code comments for explanation of what each line does, or read the [vega docu
       }
       marks: [
         {
-          # This group is shown as a button with rounded corners.
+          // This group is shown as a button with rounded corners.
           type: group
-          # mark name allows signal capturing
+          // mark name allows signal capturing
           name: groupReset
-          # Only shows button if dataForShowAll has values.
+          // Only shows button if dataForShowAll has values.
           from: {data: "dataForShowAll"}
           encode: {
             enter: {
@@ -388,12 +388,16 @@ See code comments for explanation of what each line does, or read the [vega docu
               fill: {value: "#f5f5f5"}
               stroke: {value: "#c1c1c1"}
               strokeWidth: {value: 2}
-              # use parent group's size
-              height: {signal: "item.mark.group.height"}
-              width: {signal: "item.mark.group.width"}
+              // use parent group's size
+              height: {
+                field: {group: "height"}
+              }
+              width: {
+                field: {group: "width"}
+              }
             }
             update: {
-              # groups are transparent by default
+              // groups are transparent by default
               opacity: {value: 1}
             }
             hover: {
@@ -403,12 +407,20 @@ See code comments for explanation of what each line does, or read the [vega docu
           marks: [
             {
               type: text
-              # if true, it will prevent clicking on the button when over text.
+              // if true, it will prevent clicking on the button when over text.
               interactive: false
               encode: {
                 enter: {
-                  xc: {signal: "item.mark.group.width/2"}
-                  yc: {signal: "item.mark.group.height/2 + 2"}
+                  // center text in the paren group
+                  xc: {
+                    field: {group: "width"}
+                    mult: 0.5
+                  }
+                  yc: {
+                    field: {group: "height"}
+                    mult: 0.5
+                    offset: 2
+                  }
                   align: {value: "center"}
                   baseline: {value: "middle"}
                   fontWeight: {value: "bold"}
@@ -423,7 +435,7 @@ See code comments for explanation of what each line does, or read the [vega docu
   ]
   signals: [
     {
-      # used to highlight traffic to/from the same country
+      // used to highlight traffic to/from the same country
       name: groupHover
       value: {}
       on: [
@@ -434,18 +446,18 @@ See code comments for explanation of what each line does, or read the [vega docu
         {events: "mouseout", update: "{}"}
       ]
     }
-    # used to filter only the data related to the selected country
+    // used to filter only the data related to the selected country
     {
       name: groupSelector
       value: false
       on: [
         {
-          # Clicking groupMark sets this signal to the filter values
+          // Clicking groupMark sets this signal to the filter values
           events: @groupMark:click!
           update: "{stack:datum.stack, src:datum.stack=='src' && datum.cc, dst:datum.stack=='dst' && datum.cc}"
         }
         {
-          # Clicking "show all" button, or double-clicking anywhere resets it
+          // Clicking "show all" button, or double-clicking anywhere resets it
           events: [
             {type: "click", markname: "groupReset"}
             {type: "dblclick"}
