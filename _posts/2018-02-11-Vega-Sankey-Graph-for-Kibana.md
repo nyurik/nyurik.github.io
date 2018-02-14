@@ -135,11 +135,12 @@ See code comments for explanation of what each line does, or read the [vega docu
           as: sortField
         }
         # Calculate y0 and y1 positions for stacking nodes one on top of the other,
-        # independently for each stack, and ensuring they are in the proper order.
+        # independently for each stack, and ensuring they are in the proper order,
+        # alphabetical from the top (reversed on the y axis)
         {
           type: stack
           groupby: ["stack"]
-          sort: {field: "sortField"}
+          sort: {field: "sortField", order: "descending"}
           field: doc_count
         }
         # calculate vertical center point for each node, used to draw edges
@@ -162,7 +163,7 @@ See code comments for explanation of what each line does, or read the [vega docu
         {
           type: stack
           groupby: ["stack"]
-          sort: {field: "cc"}
+          sort: {field: "cc", order: "descending"}
           field: total
         }
         # project y0 and y1 values to screen coordinates
@@ -435,12 +436,15 @@ See code comments for explanation of what each line does, or read the [vega docu
       value: false
       on: [
         {
+          # Clicking groupMark sets this signal to the filter values
           events: @groupMark:click!
           update: "{stack:datum.stack, src:datum.stack=='src' && datum.cc, dst:datum.stack=='dst' && datum.cc}"
         }
         {
+          # Clicking "show all" button, or double-clicking anywhere resets it
           events: [
             {type: "click", markname: "groupReset"}
+            {type: "dblclick"}
           ]
           update: "false"
         }
