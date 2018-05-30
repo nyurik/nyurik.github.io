@@ -74,10 +74,12 @@ The `rect` mark specifies `vals` as the source of data. The mark is drawn once p
 
 In this example, we use [linear scale](https://vega.github.io/vega/docs/scales/#linear) -- essentially a mathematical function to convert a value from the [domain](https://vega.github.io/vega/docs/scales/#domain) of the source data (in this graph `count` values of 1000..8000, and including `count=0`), to the desired [range](https://vega.github.io/vega/docs/scales/#range) (in our case the height of the graph - 0..299).  Adding `"scale": "yscale"` to both `y` and `y2` parameter uses `yscale` scaler to convert `count` to screen coordinates (0 becomes 299, and 8000 - largest value in the source data - to becomes 0).  Note that the `height` range parameter is a special case, making 0 appear at the bottom of the graph.
 
+![Rect Mark with Scaling Example](/assets/intro-rectmark2.png "Rect Mark with Scaling Example")
+
 ```json
 {
   "$schema":"https://vega.github.io/schema/vega/v3.json",
-  "width": 400, "height": 300,
+  "width": 400, "height": 100,
   "data": [ {
     "name": "vals",
     "values": [
@@ -112,10 +114,12 @@ In this example, we use [linear scale](https://vega.github.io/vega/docs/scales/#
 
 For our tutorial we will need another one of 15+ [Vega scale types](https://vega.github.io/vega/docs/scales/#types) - a band scale. This scale is used when we have a set of values (like categories), that need to be represented as bands - each occupying same proportional width of the graph's total width. Here, the band scale gives each one of the 4 unique categories the same proportional width (about 400/4, minus 5% padding between bars and on both ends).  The `{"scale": "xscale", "band": 1}` gets the 100% of the band's width for the mark's `width` parameter.
 
+![Rect Mark with Band Scaling Example](/assets/intro-rectmark3.png "Rect Mark with Band Scaling Example")
+
 ```json
 {
   "$schema":"https://vega.github.io/schema/vega/v3.json",
-  "width": 400, "height": 300,
+  "width": 400, "height": 100,
   "data": [ {
     "name": "vals",
     "values": [
@@ -156,6 +160,8 @@ For our tutorial we will need another one of 15+ [Vega scale types](https://vega
 # Axes
 A typical graph wouldn't be complete without the axes labels.  Axis definition uses the same scales we defined earlier, so adding them is as simple as referencing the scale by its name, and specifying the placement side.  Add this code as the top level element to the last code example.
 
+![Rect Mark with Axes Example](/assets/intro-rectmark-axes.png "Rect Mark with Axes Example")
+
 ```json
   "axes": [
     {"scale": "yscale", "orient": "left"},
@@ -168,10 +174,12 @@ Note that the total graph size has increased automatically to accommodate these 
 # Data Transformations and Conditionals
 Data often needs additional manipulation before it can be used for drawing. Vega provides numerous [transformations](https://vega.github.io/vega/docs/transforms/) to help with that. Let's use the most common [formula transformation](https://vega.github.io/vega/docs/transforms/formula/) to dynamically add a random `count` value field to each of the source datums. Also, in this graph we will manipulate the fill color of the bar, making it red if the value is less than 333, yellow for less than 666, and green otherwise. Note that this could have been done with a scale instead, mapping domain of the source data to the set of colors, or to a [color scheme](https://vega.github.io/vega/docs/schemes/).
 
+![Random Data Example](/assets/intro-random.png "Random Data Example")
+
 ```json
 {
   "$schema":"https://vega.github.io/schema/vega/v3.json",
-  "width": 400, "height": 300,
+  "width": 400, "height": 200,
   "data": [ {
     "name": "vals",
     "values": [
