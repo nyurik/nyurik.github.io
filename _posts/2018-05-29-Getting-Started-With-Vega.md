@@ -13,6 +13,8 @@ Open [Vega editor](https://vega.github.io/editor/) - a convenient tool to experi
 {
   "$schema": "https://vega.github.io/schema/vega/v3.json",
   "width": 100, "height": 30,
+  "background": "#eef2e8",
+  "padding": 5,
   "marks": [
     {
       "type": "text",
@@ -22,6 +24,7 @@ Open [Vega editor](https://vega.github.io/editor/) - a convenient tool to experi
           "align":    { "value": "center"},
           "baseline": { "value": "middle"},
           "stroke":   { "value": "#A32299" },
+          "angle":    { "value": 15 },
           "x":        { "signal": "width/2" },
           "y":        { "signal": "height/2" }
         }
@@ -31,9 +34,9 @@ Open [Vega editor](https://vega.github.io/editor/) - a convenient tool to experi
 }
 ```
 
-The [marks](https://vega.github.io/vega/docs/marks/) block is an array of drawing primitives, such as text, lines, and rectangles. Each mark has a large number of parameters specified inside the [encoding set](https://vega.github.io/vega/docs/marks/#encode). Each parameter is set to either a constant (value) or a result of a computation (signal) in the "enter" stage.  For the text mark, we specify the text string, make sure text is properly positioned relative to given coordinates, and set text's color. The `x` and `y` coordinates are computed based on the width and height of the graph, positioning the text in the middle.  There are many other [text mark parameters](https://vega.github.io/vega/docs/marks/text/). There is also an interactive text mark demo graph to try different parameter values.
+The [marks](https://vega.github.io/vega/docs/marks/) block is an array of drawing primitives, such as text, lines, and rectangles. Each mark has a large number of parameters specified inside the [encoding set](https://vega.github.io/vega/docs/marks/#encode). Each parameter is set to either a constant (value) or a result of a computation (signal) in the "enter" stage.  For the text mark, we specify the text string, make sure text is properly positioned relative to given coordinates, rotated, and set text's color. The `x` and `y` coordinates are computed based on the width and height of the graph, positioning the text in the middle.  There are many other [text mark parameters](https://vega.github.io/vega/docs/marks/text/). There is also an interactive text mark demo graph to try different parameter values.
 
-The `$schema` is simply an ID of the required Vega engine version. The `width` and `height` set the initial drawing canvas size. The final graph size may change in some cases, based on the content and [autosizing options](https://vega.github.io/vega/docs/specification/#autosize). Note that Kibana's default `autosize` is `fit` instead of `pad`, thus making `height` and `width` optional.
+The `$schema` is simply an ID of the required Vega engine version. Background makes the graph non-transparent. The `width` and `height` set the initial drawing canvas size. The final graph size may change in some cases, based on the content and [autosizing options](https://vega.github.io/vega/docs/specification/#autosize). Note that Kibana's default `autosize` is `fit` instead of `pad`, thus making `height` and `width` optional.  The padding parameter adds some space around the graph in addition to the width and height.
 
 # Data-driven graph
 
