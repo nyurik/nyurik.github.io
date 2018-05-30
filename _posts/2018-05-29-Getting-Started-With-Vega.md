@@ -39,10 +39,12 @@ The `$schema` is simply an ID of the required Vega engine version. The `width` a
 
 Our next step is to draw a data-driven graph using the [rectangle mark](https://vega.github.io/vega/docs/marks/rect/).  The [data section](https://vega.github.io/vega/docs/data/) allows multiple data sources, either hardcoded, or as a URL. In Kibana, you may also use direct Elasticsearch queries. Our `vals` data table has 4 rows and two columns - `category` and `count`.  We use `category` to position the bar on the `x` axis, and `count` for the bar's height.  Note that `y` coordinate's 0 is at the top, and increases downwards.
 
+![Rect Mark Example](/assets/intro-rectmark1.png "Rect Mark Example")
+
 ```json
 {
   "$schema":"https://vega.github.io/schema/vega/v3.json",
-  "width": 400, "height": 300,
+  "width": 300, "height": 100,
   "data": [ {
     "name": "vals",
     "values": [
