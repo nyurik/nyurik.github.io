@@ -170,7 +170,7 @@ For our tutorial we will need another one of 15+ [Vega scale types](https://vega
 ```
 
 # Axes
-A typical graph wouldn't be complete without the axes labels.  Axis definition uses the same scales we defined earlier, so adding them is as simple as referencing the scale by its name, and specifying the placement side.  Add this code as the top level element to the last code example.
+A typical graph wouldn't be complete without the axes labels.  [Axis definition](https://vega.github.io/vega/docs/axes/) uses the same scales we defined earlier, so adding them is as simple as referencing the scale by its name, and specifying the placement side.  Add this code as the top level element to the last code example.
 
 ![Rect Mark with Axes Example](/assets/intro-rectmark-axes.png "Rect Mark with Axes Example")
 
