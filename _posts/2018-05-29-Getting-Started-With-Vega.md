@@ -66,7 +66,10 @@ Our next step is to draw a data-driven graph using the [rectangle mark](https://
         "width": {"value": 30},
         "y":     {"field": "count"},
         "y2":    {"value": 0}
-}}} ]}
+      }
+    }
+  } ]
+}
 ```
 
 The `rect` mark specifies `vals` as the source of data. The mark is drawn once per source data value (also known as a table row or a **datum**). Unlike the previous graph, the `x` and `y` parameters are not hardcoded, but come from the fields of the datum.
@@ -110,7 +113,10 @@ In this example, we use [linear scale](https://vega.github.io/vega/docs/scales/#
         "width": {"value": 30},
         "y":     {"scale": "yscale", "field": "count"},
         "y2":    {"scale": "yscale", "value": 0}
-}}} ]}
+      }
+    }
+  } ]
+}
 ```
 
 # Band scaling
@@ -157,7 +163,10 @@ For our tutorial we will need another one of 15+ [Vega scale types](https://vega
         "width": {"scale": "xscale", "band": 1},
         "y":     {"scale": "yscale", "field": "count"},
         "y2":    {"scale": "yscale", "value": 0}
-}}} ]}
+      }
+    }
+  } ]
+}
 ```
 
 # Axes
@@ -231,7 +240,10 @@ Data often needs additional manipulation before it can be used for drawing. Vega
           {"test": "datum.count < 666", "value": "yellow"},
           {"value": "green"}
         ]
-}}} ]}
+      }
+    }
+  } ]
+}
 ```
 
 # Useful links
