@@ -163,9 +163,10 @@ See code comments for explanation of what each line does, or read the [vega docu
           as: ["stack", "grpId"]
         }
         // Create a sortkey, different for stk1 and stk2 stacks.
+        // Space separator ensures proper sort order in some corner cases.
         {
           type: formula
-          expr: datum.stack == 'stk1' ? datum.stk1+datum.stk2 : datum.stk2+datum.stk1
+          expr: datum.stack == 'stk1' ? datum.stk1+' '+datum.stk2 : datum.stk2+' '+datum.stk1
           as: sortField
         }
         // Calculate y0 and y1 positions for stacking nodes one on top of the other,
